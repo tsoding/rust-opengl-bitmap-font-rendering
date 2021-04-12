@@ -1,0 +1,12 @@
+[package]
+name = "rust-opengl-bitmap-font-rendering"
+version = "0.1.0"
+authors = ["rexim <reximkut@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gl = "0.14.0"
+glfw = "0.41.0"
+png = "0.16.8"
