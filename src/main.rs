@@ -156,12 +156,12 @@ uniform float message_scale;
 
 out vec2 uv;
 
-#define FONT_SHEET_WIDTH 128.0
-#define FONT_SHEET_HEIGHT 64.0
+#define FONT_SHEET_WIDTH 128
+#define FONT_SHEET_HEIGHT 64
 #define FONT_SHEET_COLS 18
 #define FONT_SHEET_ROWS 7
-#define FONT_CHAR_WIDTH (FONT_SHEET_WIDTH / float(FONT_SHEET_COLS))
-#define FONT_CHAR_HEIGHT (FONT_SHEET_HEIGHT / float(FONT_SHEET_ROWS))
+#define FONT_CHAR_WIDTH (FONT_SHEET_WIDTH / FONT_SHEET_COLS)
+#define FONT_CHAR_HEIGHT (FONT_SHEET_HEIGHT / FONT_SHEET_ROWS)
 
 void main() {
     vec2 mesh_position = vec2(
@@ -169,15 +169,15 @@ void main() {
         float((gl_VertexID >> 1) & 1));
 
     vec2 screen_position =
-        mesh_position * vec2(FONT_CHAR_WIDTH, FONT_CHAR_HEIGHT) * message_scale +
+        mesh_position * vec2(float(FONT_CHAR_WIDTH), float(FONT_CHAR_HEIGHT)) * message_scale +
         message_position +
-        vec2(FONT_CHAR_WIDTH * message_scale * float(gl_InstanceID), 0.0);
+        vec2(float(FONT_CHAR_WIDTH) * message_scale * float(gl_InstanceID), 0.0);
 
     gl_Position = vec4(2.0 * screen_position / resolution, 0.0, 1.0);
 
     int char_index = letter - 32;
-    float char_u = (float(char_index % FONT_SHEET_COLS) + mesh_position.x) * FONT_CHAR_WIDTH / FONT_SHEET_WIDTH;
-    float char_v = (float(char_index / FONT_SHEET_COLS) + (1.0 - mesh_position.y)) * FONT_CHAR_HEIGHT / FONT_SHEET_HEIGHT;
+    float char_u = (float(char_index % FONT_SHEET_COLS) + mesh_position.x) * float(FONT_CHAR_WIDTH) / float(FONT_SHEET_WIDTH);
+    float char_v = (float(char_index / FONT_SHEET_COLS) + (1.0 - mesh_position.y)) * float(FONT_CHAR_HEIGHT) / float(FONT_SHEET_HEIGHT);
     uv = vec2(char_u, char_v);
 }
 "#).expect("The unexpectable ZULUL");
@@ -245,7 +245,7 @@ void main() {
     unsafe {
         gl::Uniform2f(resolution_uniform, SCREEN_WIDTH as f32, SCREEN_HEIGHT as f32);
         gl::Uniform2f(message_position_uniform, 0.0, 0.0);
-        gl::Uniform1f(message_scale_uniform, 5.0);
+        gl::Uniform1f(message_scale_uniform, 3.0);
         copy_str_to_buffer(&mut string_buffer_data, string_buffer_id, payload);
     }
 
