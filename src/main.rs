@@ -111,9 +111,9 @@ unsafe fn load_texture_from_file(file_path: &str) -> GLuint {
     texture
 }
 
-unsafe fn copy_str_to_buffer(string_buffer_data: &mut [i32], string_buffer_id: GLuint, payload: &str) {
+unsafe fn copy_str_to_buffer(string_buffer_data: &mut [u8], string_buffer_id: GLuint, payload: &str) {
     for (dst, src) in string_buffer_data.iter_mut().zip(payload.bytes()) {
-        *dst = src as i32;
+        *dst = src;
     }
     gl::BindBuffer(gl::ARRAY_BUFFER, string_buffer_id);
     let size = std::mem::size_of_val(&string_buffer_data[0]) * min(string_buffer_data.len(), payload.len());
@@ -215,7 +215,7 @@ void main() {
         load_texture_from_file("./charmap-oldschool_white.png")
     };
 
-    let mut string_buffer_data: [i32; 1024] = [0; 1024];
+    let mut string_buffer_data: [u8; 1024] = [0; 1024];
 
     let string_buffer_id = unsafe {
         let mut buffer_id = 0;
@@ -231,7 +231,7 @@ void main() {
         gl::VertexAttribIPointer(
             CHAR_ATTRIB_INDEX.try_into().unwrap(),
  	        1,
- 	        gl::INT,
+ 	        gl::BYTE,
  	        0,
  	        std::ptr::null());
 
